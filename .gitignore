@@ -1,0 +1,23 @@
+# Rust build artifacts
+/target/
+
+# Soroban test ledger snapshots — regenerated automatically on each test run.
+# Commit these only if you want snapshot-regression testing (see docs/snapshots.md).
+test_snapshots/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code internal memory
+memory/
