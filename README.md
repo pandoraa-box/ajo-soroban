@@ -8,7 +8,7 @@ contract layer.
 
 ---
 
-## What is Ajo / Esusu?
+## What is Ajo
 
 **Ajo** (Yoruba) and **Esusu** (Igbo) are traditional West African rotating
 savings and credit associations (ROSCAs). A fixed group of people each
