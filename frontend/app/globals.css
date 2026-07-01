@@ -1,0 +1,42 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Satoshi', system-ui, sans-serif;
+  }
+
+  /* Body text stays near-black for readability.
+     Brand elements (headings, labels) use text-ajo-dark (blue) explicitly. */
+  body {
+    @apply bg-ajo-bg text-stone-900;
+  }
+
+  * { @apply box-border; }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] { -moz-appearance: textfield; }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  /* Page-width container: max 88rem, generous padding on large screens */
+  .page-width {
+    @apply mx-auto w-full max-w-8xl px-6 sm:px-12 xl:px-28;
+  }
+}

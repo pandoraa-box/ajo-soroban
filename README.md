@@ -1,183 +1,95 @@
-# ajo-soroban
+# Ajo — Trustless Rotating Savings on Stellar
 
-Trustless rotating savings protocol built on Soroban for the Stellar network.
+**Save together, the African way.** Ajo is a full-stack, open-source implementation of
+the traditional **Ajo / Esusu** rotating savings and credit association (ROSCA),
+rebuilt on the **Stellar Soroban** smart-contract platform.
 
-This is a contract-only port of an Ethereum/Solidity Ajo/Esusu implementation.
-No mobile or frontend code lives here — this repository is purely the smart
-contract layer.
-
----
-
-## What is Ajo
-
-**Ajo** (Yoruba) and **Esusu** (Igbo) are traditional West African rotating
-savings and credit associations (ROSCAs). A fixed group of people each
-contribute the same amount of money at regular intervals; at every interval,
-the entire pooled sum is paid out to one member. The rotation continues until
-every member has received exactly one payout. Everyone ends up paying in and
-receiving out the same total — but each member benefits from a lump-sum
-payment *before* they have saved the full amount themselves.
-
-Example with 4 participants each contributing $100/week:
-
-```
-Week 1 → Pool = $400 → paid to Alice   (Alice now has $400 after only $100 in)
-Week 2 → Pool = $400 → paid to Bob
-Week 3 → Pool = $400 → paid to Carol
-Week 4 → Pool = $400 → paid to Dave    (Dave waited longest, but ends even)
-```
-
-The protocol depends entirely on trust that every member will contribute each
-cycle. This contract removes that dependency by enforcing contributions and
-payouts on-chain.
+A fixed group of people each contribute the same amount every round; each round the
+entire pooled sum is paid out to one member. The rotation continues until every member
+has received exactly one payout. The smart contract removes the need to trust a human
+organiser — contributions and payouts are enforced on-chain.
 
 ---
 
-## Contract state machine
+## Monorepo structure
+
+This repository contains three independent but connected packages:
+
+| Folder | Stack | What it is | README |
+|--------|-------|-----------|--------|
+| [`contracts/`](./contracts) | Rust · Soroban SDK | The Ajo smart contract — group lifecycle, contributions, payouts | [contracts/README.md](./contracts/README.md) |
+| [`frontend/`](./frontend) | Next.js 15 · Tailwind · Stellar SDK | The web app — landing page, dashboard, circle management | [frontend/README.md](./frontend/README.md) |
+| [`mobile/`](./mobile) | Expo · React Native · NativeWind | The mobile app — same features, native experience | [mobile/README.md](./mobile/README.md) |
 
 ```
-         create_group()
-               │
-               ▼
-          ┌─────────┐
-          │  Open   │  ← participants join via join_group()
-          └─────────┘
-               │ last slot fills (auto-transition)
-               ▼
-          ┌──────────┐
-          │  Active  │  ◄──────────────────────────────┐
-          └──────────┘                                  │
-               │                                        │
-               │  all participants call contribute()    │
-               │                                        │
-               ▼                                        │
-          pool is full → payout() releases              │
-          funds to current cycle's recipient            │
-               │                                        │
-               │  cycle advances (current_cycle += 1)  │
-               │  if more cycles remain ───────────────►┘
-               │
-               │  current_cycle == len(participants)
-               ▼
-          ┌──────────────┐
-          │   Complete   │
-          └──────────────┘
+ajo-soroban/
+├── contracts/          # Soroban smart contract (Rust)
+│   └── ajo/src/        # lib, types, errors, storage, group, cycle, tests
+├── frontend/           # Next.js web app
+│   ├── app/            # routes (landing + /dashboard)
+│   ├── components/     # UI, layout, landing, circles, dashboard
+│   └── lib/            # contract + Stellar + Freighter integration
+├── mobile/             # Expo React Native app
+│   ├── app/            # expo-router screens (tabs + circle screens)
+│   └── components/     # shared native UI
+└── README.md           # you are here
 ```
-
-### States
-
-| State      | Description |
-|------------|-------------|
-| `Open`     | Group created; accepting new participants up to `max_participants`. |
-| `Active`   | Group is full. Participants submit contributions each cycle; payout follows. |
-| `Complete` | Every participant has received one payout. No further actions possible. |
-
-### Transition rules
-
-- `Open → Active`: triggered automatically when the last participant joins.
-- `Active → Active`: after each successful `payout()` when more cycles remain.
-- `Active → Complete`: after the final `payout()`.
 
 ---
 
-## How it maps to Ajo/Esusu
+## What is Ajo?
 
-| Traditional concept | Contract equivalent |
-|---------------------|---------------------|
-| Group organiser     | `admin` address (slot 0 in rotation) |
-| Fixed contribution  | `contribution_amount` in token stroops |
-| Contribution period | `cycle_interval_ledgers` (min ledgers between cycle starts) |
-| Payout rotation     | `participants` Vec index == `current_cycle` |
-| Trustless guarantee | On-chain token transfer via SEP-41 `token::Client` |
+**Ajo** (Yoruba) and **Esusu** (Igbo) are West African rotating savings traditions.
+Example with 4 people each saving $100/round:
+
+```
+Round 1 → Pool $400 → paid to Amara   (has $400 after only $100 in)
+Round 2 → Pool $400 → paid to Kofi
+Round 3 → Pool $400 → paid to Fatima
+Round 4 → Pool $400 → paid to Emeka   (waited longest, ends even)
+```
+
+Everyone pays in the same total and receives the same total — but each member gets a
+lump sum *before* they could have saved it alone. Ajo enforces this fairness on-chain.
 
 ---
 
-## Project structure
+## Design system
 
-```
-contracts/
-└── ajo/
-    └── src/
-        ├── lib.rs       — contract entry point; public interface via #[contractimpl]
-        ├── types.rs     — GroupConfig, GroupState, GroupStatus, ParticipantRecord, DataKey
-        ├── errors.rs    — AjoError enum (#[contracterror])
-        ├── storage.rs   — persistent storage helpers with TTL bumping
-        ├── group.rs     — create_group, join_group lifecycle logic
-        ├── cycle.rs     — contribute, payout logic
-        └── tests.rs     — unit tests
-```
+Both apps share a single visual language inspired by modern African fintech:
 
-Each module is intentionally small and single-purpose so individual features
-(default handling, penalty logic, additional queries) can be implemented as
-isolated GitHub issues by external contributors without needing to understand
-the entire codebase.
+- **Primary — royal blue** `#1B3C8A` (headings, hero, sidebar)
+- **Accent — warm orange** `#F97316` (primary actions, highlights)
+- **Neutrals** — near-white backgrounds, subtle grey borders
+- **Typeface** — [Satoshi](https://www.fontshare.com/fonts/satoshi)
 
 ---
 
-## Building and testing
-
-Requires Rust stable with the `wasm32-unknown-unknown` target:
+## Quick start
 
 ```bash
-rustup target add wasm32-unknown-unknown
+# 1. Smart contract — run tests
+cd contracts && cargo test
+
+# 2. Web app — mock mode works with no deployed contract
+cd frontend && npm install && npm run dev      # http://localhost:3000
+
+# 3. Mobile app
+cd mobile && npm install && npx expo start
 ```
 
-```bash
-# Run unit tests (native, no WASM tooling needed)
-cargo test
-
-# Build the WASM artifact
-cargo build --release --target wasm32-unknown-unknown
-```
-
-The compiled contract will be at:
-`target/wasm32-unknown-unknown/release/ajo.wasm`
+Both apps default to **mock mode** (`NEXT_PUBLIC_USE_MOCK=true`) so you can explore the
+full UI before deploying the contract to Testnet.
 
 ---
 
-## Storage design
+## Contributing
 
-Soroban charges rent per ledger entry proportional to how long it lives. This
-contract uses **persistent** storage for all long-lived state and bumps TTL on
-every read/write to keep entries alive:
+Work is tracked as [GitHub issues](https://github.com/pandoraa-box/ajo-soroban/issues) —
+20 complex, cross-stack features spanning the contract, web, and mobile layers. Each
+issue lists the contract work, frontend/mobile work, acceptance criteria, and the exact
+files to touch, so it can be picked up independently.
 
-| Key pattern                   | Type                | Notes |
-|-------------------------------|---------------------|-------|
-| `Config(group_id)`            | `GroupConfig`       | Immutable after creation |
-| `State(group_id)`             | `GroupState`        | Updated every contribute/payout |
-| `Participant(group_id, addr)` | `ParticipantRecord` | Updated on payout receipt |
-| `NextGroupId`                 | `u32`               | Instance storage counter |
+## License
 
-TTL is bumped to 60 days (≈ 1,036,800 ledgers) on every access, with a
-30-day low-water mark to avoid unnecessary bumps.
-
----
-
-## Token integration
-
-The contract uses Soroban's `token::Client` (SEP-41) for all fund movement.
-USDC or any compliant token contract can be used.
-
-- **Contribute**: calls `token.transfer(participant → contract, amount)`.
-  The participant must hold sufficient balance; the participant authorises the
-  transfer directly via Soroban auth.
-- **Payout**: calls `token.transfer(contract → recipient, pool_total)`.
-
----
-
-## Planned follow-up issues
-
-The following are scoped as separate GitHub issues for contributors:
-
-- [ ] **Default handling** — detect missed contributions; flag participant;
-  optionally pause cycle or redistribute slot.
-- [ ] **Penalty / slashing** — lock a collateral deposit at join time;
-  slash it on missed contributions.
-- [ ] **Manual group start** — allow admin to start the group before it fills
-  (useful for smaller groups that don't want to wait for a full cohort).
-- [ ] **Cycle interval enforcement** — enforce `cycle_interval_ledgers`
-  minimum gap between payouts (currently stored but not enforced).
-- [ ] **Participant query** — expose `get_participant_record` for off-chain
-  UIs to display per-member status.
-- [ ] **Extended test coverage** — edge cases: overflow, re-entrant calls,
-  zero-amount groups, single-member groups.
+Open source. Testnet only — **not for production use with real funds.**

@@ -9,6 +9,8 @@ test_snapshots/
 .env
 .env.*
 !.env.example
+!.env.local.example
+frontend/.env.local
 
 # IDE
 .idea/
@@ -21,3 +23,22 @@ Thumbs.db
 
 # Claude Code internal memory
 memory/
+
+# Frontend (Next.js)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+frontend/dist/
+
+# Mobile (Expo / React Native)
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/android/
+mobile/ios/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
