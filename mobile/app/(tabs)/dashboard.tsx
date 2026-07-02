@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { User } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useWallet } from '@/context/WalletContext';
@@ -34,7 +35,7 @@ export default function DashboardScreen() {
       <SafeAreaView className="flex-1" edges={['top']}>
         <View className="flex-1 items-center justify-center px-8 gap-4">
           <Text className="text-5xl">🔒</Text>
-          <Text className="text-xl font-bold text-ajo-dark text-center">Connect your wallet</Text>
+          <Text className="text-xl font-serif font-bold text-ajo-dark text-center tracking-tight">Connect your wallet</Text>
           <Text className="text-sm text-ajo-muted text-center leading-5">
             Enter your Stellar public key to view your circles and savings.
           </Text>
@@ -53,7 +54,19 @@ export default function DashboardScreen() {
               <Button variant="ghost" fullWidth onPress={() => setShowInput(false)}>Cancel</Button>
             </View>
           ) : (
-            <Button size="lg" onPress={() => setShowInput(true)}>Enter Public Key</Button>
+            <TouchableOpacity 
+              onPress={() => setShowInput(true)}
+              activeOpacity={0.8}
+              className="mt-4 flex-row items-center gap-3 bg-white border border-ajo-border/60 rounded-full px-6 py-4 shadow-[0_2px_10px_rgba(0,0,0,0.04)]"
+            >
+              <View className="w-5 h-5 rounded-full overflow-hidden flex-row">
+                <View className="flex-1 bg-blue-500" />
+                <View className="flex-1 bg-purple-500" />
+                <View className="flex-1 bg-pink-500" />
+                <View className="flex-1 bg-yellow-400" />
+              </View>
+              <Text className="font-bold text-ajo-dark text-base px-2">Connect Wallet</Text>
+            </TouchableOpacity>
           )}
         </View>
       </SafeAreaView>
@@ -66,17 +79,22 @@ export default function DashboardScreen() {
         {/* Header */}
         <View className="flex-row items-start justify-between">
           <View>
-            <Text className="text-xs text-ajo-muted">Welcome back,</Text>
-            <Text className="text-xl font-extrabold text-ajo-dark font-mono">
+            <Text className="text-xs font-semibold uppercase tracking-widest text-ajo-muted mb-1">Welcome back,</Text>
+            <Text className="text-[28px] font-serif font-bold text-ajo-dark tracking-tight">
               {shortenAddress(publicKey!, 8)}
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() => router.push('/circles/create')}
-            className="bg-ajo-dark rounded-full px-4 py-2"
-          >
-            <Text className="text-white font-semibold text-sm">+ New</Text>
-          </TouchableOpacity>
+          <View className="flex-row items-center gap-2">
+            <TouchableOpacity
+              onPress={() => router.push('/circles/create')}
+              className="bg-ajo-lime rounded-xl px-5 py-2.5 shadow-sm"
+            >
+              <Text className="text-white font-bold text-sm">+ New</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/(tabs)/profile')} className="w-10 h-10 rounded-xl bg-white border border-ajo-border/60 items-center justify-center shadow-sm">
+              <User size={18} color="#1E1D1B" strokeWidth={2.5} />
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Payout notification */}
@@ -115,8 +133,8 @@ export default function DashboardScreen() {
         </View>
 
         {/* My Circles */}
-        <View>
-          <Text className="text-base font-bold text-ajo-dark mb-3">My Circles</Text>
+        <View className="mt-2">
+          <Text className="text-xl font-serif font-bold text-ajo-dark mb-4 tracking-tight">My Circles</Text>
           {myCircles.length === 0 ? (
             <View className="items-center py-8 border border-dashed border-ajo-border rounded-2xl gap-2">
               <Text className="text-sm text-ajo-muted">You haven't joined any circles yet.</Text>

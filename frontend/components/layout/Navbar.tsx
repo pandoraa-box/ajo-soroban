@@ -18,12 +18,10 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-ajo-border bg-white">
-      <nav className="mx-auto flex max-w-8xl items-center justify-between px-6 sm:px-12 xl:px-28 py-4">
+      <nav className="mx-auto flex max-w-8xl items-center justify-between px-6 sm:px-12 xl:px-12 py-4">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-ajo-dark transition-colors group-hover:bg-ajo-lime">
-            <span className="text-sm font-bold text-ajo-lime transition-colors group-hover:text-white">A</span>
-          </div>
-          <span className="text-lg font-bold text-ajo-dark">Ajo</span>
+          <img src="/logo.png" alt="Ajo Logo" className="h-8 w-8 object-contain transition-transform group-hover:scale-105" />
+          <span className="font-serif text-2xl font-medium text-ajo-dark">Ajo</span>
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
@@ -61,7 +59,7 @@ export function Navbar() {
             <button
               onClick={connect}
               disabled={isConnecting}
-              className="rounded-full bg-ajo-lime px-5 py-2 text-sm font-bold text-white transition-all hover:bg-ajo-lime-dark hover:scale-[0.98] disabled:opacity-60"
+              className="rounded-xl bg-ajo-lime px-5 py-2 text-sm font-semibold text-white transition-all hover:bg-ajo-lime-dark hover:scale-[0.98] disabled:opacity-60"
             >
               {isConnecting ? 'Connecting…' : 'Connect Wallet'}
             </button>

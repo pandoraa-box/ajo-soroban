@@ -8,10 +8,10 @@ export function TrustBand() {
   return (
     <section className="bg-white border-y border-ajo-border">
       <div className="page-width py-16">
-        <div className="grid gap-10 sm:grid-cols-3">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 md:grid-cols-4 md:gap-12 animate-slide-up" style={{ animationDelay: '600ms', animationFillMode: 'both' }}>
           {POINTS.map((p) => (
             <div key={p.stat} className="text-center sm:text-left">
-              <p className="text-4xl font-bold text-ajo-dark lg:text-5xl">{p.stat}</p>
+              <p className="font-serif text-[clamp(2.5rem,4vw,3.5rem)] font-medium tracking-tight text-ajo-dark">{p.stat}</p>
               <p className="mt-2 text-sm text-ajo-muted leading-relaxed">{p.label}</p>
             </div>
           ))}

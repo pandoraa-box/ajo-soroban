@@ -22,16 +22,16 @@ export function CircleCard({ circle: c }: { circle: Circle }) {
           <Text className="text-white text-xl font-black">{c.name[0]}</Text>
         </View>
         <View className="flex-1">
-          <Text className="text-ajo-dark font-black text-base">{c.name}</Text>
-          <Text className="text-ajo-muted text-xs mt-0.5">Circle #{c.id}</Text>
+          <Text className="text-ajo-dark font-serif font-bold text-lg tracking-tight">{c.name}</Text>
+          <Text className="text-ajo-muted text-[10px] uppercase tracking-widest mt-0.5">Circle #{c.id}</Text>
         </View>
         <StatusBadge status={c.state.status} />
       </View>
 
       {/* Big payout number */}
-      <View className="bg-ajo-lime rounded-2xl px-5 py-4">
-        <Text className="text-xs font-medium text-ajo-dark/50 mb-1">Full pot payout</Text>
-        <Text className="text-2xl font-black text-ajo-dark">{pool}</Text>
+      <View className="bg-ajo-surface rounded-2xl px-5 py-4 border border-ajo-border/60">
+        <Text className="text-[10px] font-bold uppercase tracking-widest text-ajo-muted mb-1">Full pot payout</Text>
+        <Text className="text-2xl font-serif font-bold text-ajo-dark">{pool}</Text>
       </View>
 
       {/* Stats row */}
@@ -71,8 +71,8 @@ export function CircleCard({ circle: c }: { circle: Circle }) {
 function StatItem({ label, value }: { label: string; value: string }) {
   return (
     <View className="flex-1 items-center gap-0.5">
-      <Text className="text-xs text-ajo-muted">{label}</Text>
-      <Text className="text-sm font-black text-ajo-dark">{value}</Text>
+      <Text className="text-[10px] font-bold uppercase tracking-widest text-ajo-muted mb-0.5">{label}</Text>
+      <Text className="text-sm font-bold text-ajo-dark">{value}</Text>
     </View>
   );
 }

@@ -18,12 +18,12 @@ const FEATURES = [
 
 export function Features() {
   return (
-    <section id="features" className="bg-white py-28 lg:py-36">
+    <section id="features" className="bg-ajo-surface py-28 lg:py-36">
       <div className="page-width">
 
-        <div className="mb-20">
-          <p className="mb-4 text-sm font-bold uppercase tracking-[0.12em] text-ajo-lime">Why Ajo</p>
-          <h2 className="max-w-xl text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.1] tracking-tight text-ajo-dark">
+        <div className="mb-20 animate-slide-up" style={{ animationFillMode: 'both' }}>
+          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-ajo-lime">Why Ajo</p>
+          <h2 className="max-w-xl font-serif text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[1.05] tracking-tight text-ajo-dark">
             A savings club that actually works.
           </h2>
           <p className="mt-5 max-w-lg text-lg text-ajo-muted leading-relaxed">
@@ -32,15 +32,16 @@ export function Features() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          {FEATURES.map((f) => (
+          {FEATURES.map((f, i) => (
             <div
               key={f.number}
-              className="group relative rounded-3xl border border-ajo-border bg-ajo-surface p-9 transition-all duration-200 hover:border-ajo-dark hover:bg-white hover:shadow-[0_4px_24px_rgba(27,60,138,0.08)]"
+              className="group relative rounded-3xl border border-ajo-border bg-white p-9 transition-all duration-200 hover:border-ajo-dark hover:bg-ajo-surface hover:shadow-[0_4px_24px_rgba(30,29,27,0.08)] animate-slide-up"
+              style={{ animationDelay: `${(i + 1) * 100}ms`, animationFillMode: 'both' }}
             >
-              <p className="mb-6 text-4xl font-bold text-ajo-dark/8 group-hover:text-ajo-lime/20 transition-colors">
+              <p className="mb-6 font-serif text-5xl italic text-ajo-dark/5 group-hover:text-ajo-lime/20 transition-colors">
                 {f.number}
               </p>
-              <h3 className="mb-3 text-[1.1rem] font-bold text-ajo-dark leading-snug">{f.title}</h3>
+              <h3 className="mb-3 font-serif text-[1.3rem] font-medium text-ajo-dark leading-snug">{f.title}</h3>
               <p className="text-[0.93rem] leading-relaxed text-ajo-muted">{f.body}</p>
             </div>
           ))}

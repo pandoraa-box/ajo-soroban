@@ -11,10 +11,7 @@ export default function RootLayout() {
         <WalletProvider>
           <Stack
             screenOptions={{
-              headerStyle: { backgroundColor: '#FFFFFF' },
-              headerTintColor: '#1B3C8A',
-              headerTitleStyle: { fontWeight: '700' },
-              headerShadowVisible: false,
+              headerShown: false,
               contentStyle: { backgroundColor: '#FAFAFA' },
             }}
           />

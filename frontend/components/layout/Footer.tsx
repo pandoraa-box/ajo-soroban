@@ -12,10 +12,8 @@ export function Footer() {
     <footer className="bg-white border-t border-ajo-border">
       <div className="page-width flex flex-col items-center justify-between gap-4 py-8 sm:flex-row">
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-ajo-dark">
-            <span className="text-xs font-bold text-ajo-lime">A</span>
-          </div>
-          <span className="text-sm font-semibold text-ajo-dark">Ajo</span>
+          <img src="/logo.png" alt="Ajo Logo" className="h-6 w-6 object-contain grayscale opacity-80" />
+          <span className="font-serif text-lg font-medium text-ajo-dark">Ajo</span>
           <span className="ml-2 text-xs text-ajo-muted">© {new Date().getFullYear()}</span>
         </div>
 

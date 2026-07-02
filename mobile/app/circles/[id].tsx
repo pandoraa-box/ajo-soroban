@@ -65,7 +65,7 @@ export default function CircleDetailScreen() {
           </View>
           <View className="flex-1">
             <View className="flex-row items-center gap-2 flex-wrap">
-              <Text className="text-xl font-extrabold text-ajo-dark">{circle.name}</Text>
+              <Text className="text-[28px] font-serif font-bold text-ajo-dark tracking-tight leading-tight">{circle.name}</Text>
               <StatusBadge status={state.status} />
             </View>
             <Text className="text-xs text-ajo-muted font-mono mt-0.5">
@@ -90,10 +90,10 @@ export default function CircleDetailScreen() {
         </View>
 
         {/* Pool banner */}
-        <View className="bg-ajo-dark rounded-2xl p-5 flex-row justify-between items-center">
+        <View className="bg-ajo-dark rounded-3xl p-6 flex-row justify-between items-center shadow-sm">
           <View>
-            <Text className="text-xs text-white/50 mb-1">Total payout pool</Text>
-            <Text className="text-2xl font-extrabold text-white">{pool}</Text>
+            <Text className="text-[10px] uppercase font-bold tracking-widest text-white/50 mb-1">Total payout pool</Text>
+            <Text className="text-3xl font-serif font-bold text-white">{pool}</Text>
           </View>
           {state.status === 'Active' && (
             <View className="items-end">

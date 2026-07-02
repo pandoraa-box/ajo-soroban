@@ -23,12 +23,12 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-ajo-surface py-28 lg:py-36">
+    <section id="how-it-works" className="bg-white py-28 lg:py-36">
       <div className="page-width">
 
-        <div className="mb-20">
-          <p className="mb-4 text-sm font-bold uppercase tracking-[0.12em] text-ajo-lime">The process</p>
-          <h2 className="max-w-xl text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.1] tracking-tight text-ajo-dark">
+        <div className="mb-20 animate-slide-up" style={{ animationFillMode: 'both' }}>
+          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-ajo-lime">The process</p>
+          <h2 className="max-w-xl font-serif text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[1.05] tracking-tight text-ajo-dark">
             Simple enough to explain in four steps.
           </h2>
           <p className="mt-5 max-w-md text-lg text-ajo-muted leading-relaxed">
@@ -37,20 +37,24 @@ export function HowItWorks() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((s) => (
-            <div key={s.n} className="rounded-3xl border border-ajo-border bg-white p-8">
-              <div className="mb-7 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-ajo-dark text-base font-bold text-ajo-lime">
+          {STEPS.map((s, i) => (
+            <div 
+              key={s.n} 
+              className="rounded-3xl border border-ajo-border bg-ajo-surface p-8 animate-slide-up"
+              style={{ animationDelay: `${(i + 1) * 100}ms`, animationFillMode: 'both' }}
+            >
+              <div className="mb-7 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-ajo-dark font-serif text-lg text-ajo-lime">
                 {s.n}
               </div>
-              <h3 className="mb-3 text-base font-bold text-ajo-dark leading-snug">{s.title}</h3>
+              <h3 className="mb-3 font-serif text-[1.2rem] font-medium text-ajo-dark leading-snug">{s.title}</h3>
               <p className="text-sm leading-relaxed text-ajo-muted">{s.body}</p>
             </div>
           ))}
         </div>
 
         {/* Example */}
-        <div className="mt-14 rounded-3xl border border-ajo-border bg-white p-9">
-          <p className="mb-7 text-xs font-bold uppercase tracking-[0.15em] text-ajo-muted">
+        <div className="mt-14 rounded-3xl border border-ajo-border bg-ajo-surface p-9">
+          <p className="mb-7 text-xs font-semibold uppercase tracking-widest text-ajo-muted">
             Example — 4 friends, $100 each
           </p>
           <div className="grid gap-3 sm:grid-cols-4">
@@ -60,7 +64,7 @@ export function HowItWorks() {
               { round: 'Round 3', name: 'Fatima', highlight: false },
               { round: 'Round 4', name: 'Emeka',  highlight: false },
             ].map((r) => (
-              <div key={r.round} className={`flex flex-col gap-2 rounded-2xl p-6 text-center ${r.highlight ? 'bg-ajo-lime' : 'bg-ajo-surface'}`}>
+              <div key={r.round} className={`flex flex-col gap-2 rounded-2xl p-6 text-center ${r.highlight ? 'bg-ajo-lime' : 'bg-white'}`}>
                 <span className={`text-xs font-semibold ${r.highlight ? 'text-white/70' : 'text-ajo-muted'}`}>{r.round}</span>
                 <span className={`text-xl font-bold ${r.highlight ? 'text-white' : 'text-ajo-dark'}`}>{r.name}</span>
                 <span className={`text-2xl font-bold ${r.highlight ? 'text-white' : 'text-ajo-lime'}`}>$400</span>

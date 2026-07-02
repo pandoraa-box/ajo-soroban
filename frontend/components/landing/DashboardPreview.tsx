@@ -1,8 +1,8 @@
 export function DashboardPreview() {
   return (
-    <div className="relative w-full max-w-[340px] animate-fade-in">
+    <div className="relative w-full max-w-[380px] xl:max-w-[420px] animate-fade-in">
       {/* Phone frame — light */}
-      <div className="overflow-hidden rounded-3xl border border-ajo-border bg-white shadow-[0_20px_60px_rgba(27,60,138,0.15)]">
+      <div className="overflow-hidden rounded-3xl border border-ajo-border bg-white shadow-[0_20px_60px_rgba(30,29,27,0.15)]">
         {/* Title bar */}
         <div className="flex items-center justify-between bg-ajo-dark px-5 py-3">
           <div className="flex items-center gap-1.5">
@@ -18,13 +18,13 @@ export function DashboardPreview() {
           {/* Greeting */}
           <div className="mb-5">
             <p className="text-xs text-ajo-muted">Good morning 👋</p>
-            <p className="text-xl font-bold text-ajo-dark">Amara</p>
+            <p className="font-serif text-2xl font-medium text-ajo-dark">Amara</p>
           </div>
 
           {/* Balance card — orange */}
-          <div className="mb-4 rounded-2xl bg-ajo-lime p-4">
-            <p className="text-xs font-semibold text-white/70">Total saved so far</p>
-            <p className="mt-1 text-3xl font-bold text-white">$4,820</p>
+          <div className="mb-4 rounded-xl bg-ajo-lime p-5">
+            <p className="text-xs font-semibold text-white/80">Total saved so far</p>
+            <p className="mt-1 font-serif text-4xl font-medium text-white">$4,820</p>
             <div className="mt-3 flex items-center gap-1.5">
               <div className="h-1.5 w-1.5 rounded-full bg-white/50" />
               <p className="text-xs font-medium text-white/70">3 active circles</p>
@@ -66,7 +66,7 @@ export function DashboardPreview() {
       <div className="absolute -bottom-4 -right-4 flex items-center gap-2 rounded-2xl border border-ajo-border bg-white px-3 py-2 shadow-xl">
         <span className="text-lg">⛓️</span>
         <div>
-          <p className="text-xs font-bold text-ajo-dark">On-chain</p>
+          <p className="text-xs font-medium text-ajo-dark">On-chain</p>
           <p className="text-[10px] text-ajo-muted">Stellar Soroban</p>
         </div>
       </div>

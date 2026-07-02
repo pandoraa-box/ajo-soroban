@@ -25,14 +25,17 @@ export default function CirclesScreen() {
   return (
     <SafeAreaView className="flex-1" edges={['top']}>
       {/* Header */}
-      <View className="flex-row items-start justify-between px-5 pt-5 pb-3">
+      <View className="flex-row items-start justify-between px-5 pt-5 pb-4">
         <View>
-          <Text className="text-2xl font-extrabold text-ajo-dark tracking-tight">All Circles</Text>
-          <Text className="text-xs text-ajo-muted mt-0.5">Browse open circles or track active rotations</Text>
+          <Text className="text-[28px] font-serif font-bold text-ajo-dark tracking-tight">All Circles</Text>
+          <Text className="text-[10px] font-semibold uppercase tracking-widest text-ajo-muted mt-1">Browse and join</Text>
         </View>
-        <Button size="sm" onPress={() => router.push('/circles/create')}>
-          + New
-        </Button>
+        <TouchableOpacity
+          onPress={() => router.push('/circles/create')}
+          className="bg-ajo-lime rounded-xl px-4 py-2 shadow-sm"
+        >
+          <Text className="text-white font-bold text-sm">+ New</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Filter pills */}

@@ -23,11 +23,9 @@ export function DashboardSidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-40 flex w-60 flex-col bg-ajo-sidebar">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 border-b border-white/10 px-6 py-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-ajo-lime">
-          <span className="text-sm font-bold text-white">A</span>
-        </div>
-        <span className="text-lg font-bold text-white">Ajo</span>
+      <div className="flex items-center gap-2.5 border-b border-white/5 px-6 py-6">
+        <img src="/logo.png" alt="Ajo Logo" className="h-7 w-7 object-contain opacity-90 sepia-[.3]" />
+        <span className="font-serif text-2xl font-medium text-white">Ajo</span>
       </div>
 
       {/* Wallet chip */}

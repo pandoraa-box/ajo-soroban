@@ -44,8 +44,8 @@ export default function CreateCircleScreen() {
       <Stack.Screen options={{ title: 'Start a Circle', headerBackTitle: 'Circles' }} />
       <ScrollView className="flex-1" contentContainerStyle={{ padding: 20, gap: 20 }}>
         <View>
-          <Text className="text-xl font-extrabold text-ajo-dark tracking-tight">Configure your circle</Text>
-          <Text className="text-sm text-ajo-muted mt-1">You'll be assigned rotation slot #1 as creator.</Text>
+          <Text className="text-[28px] font-serif font-bold text-ajo-dark tracking-tight leading-tight">Configure your circle</Text>
+          <Text className="text-[10px] font-semibold uppercase tracking-widest text-ajo-muted mt-2">You'll be assigned rotation slot #1 as creator.</Text>
         </View>
 
         {/* Contribution amount */}
@@ -101,7 +101,7 @@ export default function CreateCircleScreen() {
         </View>
 
         {/* Summary */}
-        <View className="bg-ajo-bg rounded-2xl p-4 gap-3">
+        <View className="bg-ajo-surface border border-ajo-border/60 rounded-3xl p-6 gap-3 shadow-sm">
           <Text className="text-xs font-semibold text-ajo-muted uppercase tracking-wide">Circle Summary</Text>
           {[
             ['Per cycle',      `$${amountNum.toFixed(0)} USDC`],
@@ -114,9 +114,9 @@ export default function CreateCircleScreen() {
               <Text className="text-sm font-semibold text-ajo-dark">{v}</Text>
             </View>
           ))}
-          <View className="border-t border-ajo-border pt-3 flex-row justify-between">
+          <View className="border-t border-ajo-border/60 pt-4 flex-row justify-between items-center mt-2">
             <Text className="text-sm font-semibold text-ajo-dark">Payout pool</Text>
-            <Text className="text-base font-extrabold text-ajo-lime">{formatAmount(totalPool)}</Text>
+            <Text className="text-2xl font-serif font-bold text-ajo-lime">{formatAmount(totalPool)}</Text>
           </View>
         </View>
 

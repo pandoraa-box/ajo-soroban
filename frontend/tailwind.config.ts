@@ -10,23 +10,23 @@ const config: Config = {
     extend: {
       colors: {
         ajo: {
-          // ── Blues (Roadrunner-inspired navy / royal blue) ──
-          dark:           '#1B3C8A',  // deep royal blue  — hero sections, headings, sidebar
-          'dark-surface': '#1F4699',  // slightly lighter blue — inner cards on dark
-          sidebar:        '#0D2552',  // darkest navy        — sidebar background
-          'blue-light':   '#EEF2FF',  // very light blue     — surface tints on white pages
-          // ── Orange (Roadrunner-inspired warm orange) ──
-          lime:           '#F97316',  // vibrant orange  — primary CTA, highlights (kept "lime" token name)
-          'lime-soft':    '#FFF3E8',  // very light orange
-          'lime-dark':    '#EA6A08',  // darker orange — hover states
-          // ── Greens (kept for positive / success only) ──
+          // ── Earthy Dark (Claude-inspired charcoal) ──
+          dark:           '#1E1D1B',
+          'dark-surface': '#2C2B29',
+          sidebar:        '#171615',
+          'blue-light':   '#F6F2EA',  // warm cream tint
+          // ── Coral/Terracotta (Claude-inspired primary) ──
+          lime:           '#D47253',
+          'lime-soft':    '#F7ECE6',
+          'lime-dark':    '#B65A3D',
+          // ── Greens ──
           green:          '#16A34A',
           'green-light':  '#DCFCE7',
-          // ── Neutrals ──
-          bg:             '#FAFAFA',
-          surface:        '#F5F5F4',
-          border:         '#E5E7EB',
-          muted:          '#6B7280',
+          // ── Neutrals (White & Light Cream) ──
+          bg:             '#FFFFFF',
+          surface:        '#FAF8F3',
+          border:         '#EBE8E1',
+          muted:          '#73716D',
           // ── Status ──
           amber:          '#F59E0B',
           'amber-light':  '#FEF3C7',
@@ -37,6 +37,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Satoshi', 'system-ui', 'sans-serif'],
+        serif: ['Newsreader', 'ui-serif', 'Georgia', 'serif'],
       },
       borderRadius: {
         '4xl': '2rem',

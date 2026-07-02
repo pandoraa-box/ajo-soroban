@@ -24,10 +24,10 @@ function KPICard({
   }[accent];
 
   return (
-    <div className={`rounded-3xl border p-8 ${styles.wrap}`}>
-      <p className={`mb-3 text-sm font-semibold ${styles.label}`}>{label}</p>
-      <p className={`text-4xl font-bold tracking-tight ${styles.value}`}>{value}</p>
-      {sub && <p className={`mt-2 text-xs ${styles.sub}`}>{sub}</p>}
+    <div className={`rounded-[2rem] border p-8 shadow-sm transition-transform hover:-translate-y-1 ${styles.wrap} animate-slide-up`}>
+      <p className={`mb-4 text-xs font-semibold uppercase tracking-widest ${styles.label}`}>{label}</p>
+      <p className={`font-serif text-[clamp(2rem,3vw,3rem)] font-medium leading-none tracking-tight ${styles.value}`}>{value}</p>
+      {sub && <p className={`mt-4 text-sm font-medium ${styles.sub}`}>{sub}</p>}
     </div>
   );
 }
@@ -51,12 +51,12 @@ export default function DashboardOverviewPage() {
   return (
     <>
       {/* Top bar */}
-      <div className="sticky top-0 z-30 flex items-center justify-between border-b border-ajo-border bg-white px-10 py-5">
-        <div>
-          <h1 className="text-xl font-bold text-ajo-dark">
+      <div className="sticky top-0 z-30 flex items-center justify-between border-b border-ajo-border/60 bg-white/80 backdrop-blur-md px-10 py-5">
+        <div className="animate-fade-in">
+          <h1 className="font-serif text-2xl font-medium text-ajo-dark">
             {isConnected && publicKey ? `Hey, ${shortenAddress(publicKey, 4)} 👋` : 'Dashboard'}
           </h1>
-          <p className="text-xs text-ajo-muted mt-0.5">
+          <p className="text-sm font-medium text-ajo-muted mt-1">
             {isConnected ? "Here's how your savings are going." : 'Connect your wallet to get started.'}
           </p>
         </div>
@@ -93,20 +93,20 @@ export default function DashboardOverviewPage() {
           <>
             {/* Payout alert */}
             {upcomingPayout && (
-              <div className="flex items-center justify-between rounded-3xl border border-amber-200 bg-amber-50 px-8 py-6">
+              <div className="flex items-center justify-between rounded-[2rem] border border-ajo-lime/30 bg-ajo-lime-soft px-8 py-6 shadow-sm animate-slide-up">
                 <div className="flex items-center gap-5">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-3xl">🎉</div>
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm text-3xl">🎉</div>
                   <div>
-                    <p className="text-lg font-bold text-amber-900">It's your turn to receive!</p>
-                    <p className="mt-0.5 text-sm text-amber-700/70">
+                    <p className="font-serif text-xl font-medium text-ajo-dark">It's your turn to receive!</p>
+                    <p className="mt-1 text-sm text-ajo-dark/70">
                       {upcomingPayout.name} — once everyone pays in you'll receive{' '}
-                      <strong>{formatAmount(upcomingPayout.config.contribution_amount * BigInt(upcomingPayout.config.max_participants))}</strong>.
+                      <strong className="font-serif text-lg text-ajo-lime">{formatAmount(upcomingPayout.config.contribution_amount * BigInt(upcomingPayout.config.max_participants))}</strong>.
                     </p>
                   </div>
                 </div>
                 <Link href={`${BASE}/${upcomingPayout.id}`}>
-                  <button className="flex items-center gap-2 rounded-full bg-amber-800 px-5 py-2.5 text-xs font-bold text-white hover:bg-amber-900 transition-colors">
-                    View Circle <ArrowUpRight size={13} />
+                  <button className="flex items-center gap-2 rounded-xl bg-ajo-lime px-6 py-3 text-sm font-semibold text-white hover:bg-ajo-lime-dark transition-colors hover:scale-95 transition-transform shadow-sm">
+                    View Circle <ArrowUpRight size={16} />
                   </button>
                 </Link>
               </div>
@@ -121,19 +121,19 @@ export default function DashboardOverviewPage() {
             </div>
 
             {/* Chart + circles */}
-            <div className="grid gap-6 lg:grid-cols-5">
-              <div className="lg:col-span-3"><SavingsChart circles={myCircles} userKey={publicKey ?? ''} /></div>
+            <div className="grid gap-6 lg:grid-cols-5 animate-slide-up" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
+              <div className="lg:col-span-3 rounded-[2rem] border border-ajo-border bg-white shadow-sm overflow-hidden p-1"><SavingsChart circles={myCircles} userKey={publicKey ?? ''} /></div>
               <div className="lg:col-span-2">
-                <div className="h-full rounded-3xl border border-ajo-border bg-white p-8">
-                  <div className="mb-6 flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-ajo-dark">My Circles</h3>
-                    <Link href={BASE} className="text-xs font-bold text-ajo-muted hover:text-ajo-dark transition-colors">
-                      See all →
+                <div className="h-full rounded-[2rem] border border-ajo-border bg-white p-8 shadow-sm">
+                  <div className="mb-8 flex items-center justify-between">
+                    <h3 className="font-serif text-2xl font-medium text-ajo-dark">My Circles</h3>
+                    <Link href={BASE} className="text-xs font-bold uppercase tracking-widest text-ajo-lime hover:text-ajo-lime-dark transition-colors">
+                      See all
                     </Link>
                   </div>
                   {loading ? (
                     <div className="flex justify-center py-10">
-                      <div className="h-7 w-7 animate-spin rounded-full border-2 border-ajo-lime border-t-transparent" />
+                      <div className="h-8 w-8 animate-spin rounded-full border-2 border-ajo-lime border-t-transparent" />
                     </div>
                   ) : (
                     <CircleList circles={myCircles.slice(0, 4)} basePath={BASE} emptyLabel="No circles yet — start one!" />
@@ -143,12 +143,12 @@ export default function DashboardOverviewPage() {
             </div>
 
             {/* Activity + quick actions */}
-            <div className="grid gap-6 lg:grid-cols-3">
-              <div className="lg:col-span-2">
+            <div className="grid gap-6 lg:grid-cols-3 animate-slide-up" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
+              <div className="lg:col-span-2 rounded-[2rem] border border-ajo-border bg-white shadow-sm overflow-hidden p-1">
                 <ActivityFeed circles={myCircles} userKey={publicKey ?? ''} basePath={BASE} />
               </div>
-              <div className="rounded-3xl border border-ajo-border bg-white p-8">
-                <h3 className="mb-6 text-lg font-bold text-ajo-dark">Quick actions</h3>
+              <div className="rounded-[2rem] border border-ajo-border bg-white p-8 shadow-sm">
+                <h3 className="mb-8 font-serif text-2xl font-medium text-ajo-dark">Quick actions</h3>
                 <div className="space-y-3">
                   {[
                     { label: 'Start a new circle',  href: `${BASE}/create`, lime: true  },
@@ -156,21 +156,21 @@ export default function DashboardOverviewPage() {
                     { label: 'Go to website',       href: '/',              lime: false },
                   ].map((a) => (
                     <Link key={a.label} href={a.href}>
-                      <div className={`flex items-center justify-between rounded-2xl px-5 py-4 transition-all ${a.lime ? 'bg-ajo-lime hover:bg-ajo-lime-dark' : 'bg-ajo-surface hover:bg-ajo-border'}`}>
-                        <span className="text-sm font-bold text-ajo-dark">{a.label}</span>
-                        <ArrowUpRight size={14} className="text-ajo-dark/40" />
+                      <div className={`flex items-center justify-between rounded-xl px-5 py-4 transition-all ${a.lime ? 'bg-ajo-lime hover:bg-ajo-lime-dark' : 'bg-ajo-surface hover:bg-ajo-border'} hover:-translate-y-0.5 shadow-sm`}>
+                        <span className={`text-sm font-semibold ${a.lime ? 'text-white' : 'text-ajo-dark'}`}>{a.label}</span>
+                        <ArrowUpRight size={16} className={a.lime ? 'text-white/60' : 'text-ajo-dark/40'} />
                       </div>
                     </Link>
                   ))}
                 </div>
-                <div className="mt-6 rounded-2xl bg-ajo-dark p-6 text-white">
-                  <p className="mb-1 text-xs font-semibold text-white/40">Test wallet balance</p>
-                  <p className="text-2xl font-bold">0 USDC</p>
+                <div className="mt-8 rounded-3xl bg-ajo-sidebar p-8 shadow-sm">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-white/40">Test wallet balance</p>
+                  <p className="font-serif text-3xl font-medium text-white">0 USDC</p>
                   <a
                     href="https://laboratory.stellar.org/#account-creator?network=test"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-ajo-lime px-4 py-2 text-xs font-bold text-white hover:bg-ajo-lime-dark transition-colors"
+                    className="mt-6 inline-flex w-full justify-center items-center gap-1.5 rounded-xl bg-white/10 hover:bg-white/20 px-4 py-3 text-sm font-semibold text-white transition-colors"
                   >
                     Get free test funds ↗
                   </a>

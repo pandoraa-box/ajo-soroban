@@ -17,7 +17,7 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView className="flex-1" edges={['top']}>
       <ScrollView className="flex-1 px-5" contentContainerStyle={{ paddingTop: 20, paddingBottom: 32, gap: 16 }}>
-        <Text className="text-2xl font-extrabold text-ajo-dark tracking-tight">Profile</Text>
+        <Text className="text-[28px] font-serif font-bold text-ajo-dark tracking-tight mb-2">Profile</Text>
 
         {isConnected && publicKey ? (
           <>
