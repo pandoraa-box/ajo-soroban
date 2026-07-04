@@ -11,6 +11,9 @@ organiser — contributions and payouts are enforced on-chain.
 
 ---
 
+join TG channel 
+https://t.me/+mUl2WidjFcU0NTY0
+
 ## Monorepo structure
 
 This repository contains three independent but connected packages:
