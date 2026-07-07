@@ -12,6 +12,9 @@ members lock idle funds for fixed-term yield.
 
 ---
 
+join TG channel 
+https://t.me/+mUl2WidjFcU0NTY0
+
 ## Monorepo structure
 
 | Folder | Stack | What it is | README |
