@@ -55,17 +55,17 @@ export default function CircleDetailScreen() {
 
   return (
     <SafeAreaView className="flex-1" edges={['top']}>
-      <Stack.Screen options={{ title: circle.name, headerBackTitle: 'Circles' }} />
+      <Stack.Screen options={{ title: circle.config.name, headerBackTitle: 'Circles' }} />
       <ScrollView className="flex-1 px-5" contentContainerStyle={{ paddingTop: 16, paddingBottom: 32, gap: 16 }}>
 
         {/* Header */}
         <View className="flex-row items-center gap-3">
           <View className="w-14 h-14 rounded-2xl bg-ajo-dark items-center justify-center">
-            <Text className="text-white text-2xl font-extrabold">{circle.name[0]}</Text>
+            <Text className="text-white text-2xl font-extrabold">{circle.config.name[0]}</Text>
           </View>
           <View className="flex-1">
             <View className="flex-row items-center gap-2 flex-wrap">
-              <Text className="text-[28px] font-serif font-bold text-ajo-dark tracking-tight leading-tight">{circle.name}</Text>
+              <Text className="text-[28px] font-serif font-bold text-ajo-dark tracking-tight leading-tight">{circle.config.name}</Text>
               <StatusBadge status={state.status} />
             </View>
             <Text className="text-xs text-ajo-muted font-mono mt-0.5">

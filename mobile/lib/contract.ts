@@ -1,7 +1,7 @@
 import type { Circle } from '@/types/ajo';
 import { MOCK_CIRCLES } from './mockData';
 
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 export async function fetchAllCircles(): Promise<Circle[]> {
   if (USE_MOCK) return MOCK_CIRCLES;

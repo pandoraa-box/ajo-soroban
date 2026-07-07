@@ -1,24 +1,55 @@
 import { View, Text } from 'react-native';
+import { Radio, UserPlus, CheckCircle, Gift } from 'lucide-react-native';
 import type { GroupStatus } from '@/types/ajo';
 
-const CONFIG: Record<GroupStatus, { bg: string; dot: string; text: string }> = {
-  Open:     { bg: 'bg-blue-50',        dot: 'bg-blue-500',  text: 'text-blue-700'  },
-  Active:   { bg: 'bg-ajo-lime-soft',  dot: 'bg-ajo-lime',  text: 'text-ajo-dark'  },
-  Complete: { bg: 'bg-ajo-surface',    dot: 'bg-ajo-border', text: 'text-ajo-muted' },
-};
+type BadgeVariant = GroupStatus | 'yourTurn';
 
-const LABEL: Record<GroupStatus, string> = {
-  Open:     'Open to join',
-  Active:   'Saving now',
-  Complete: 'Finished',
-};
+interface BadgeConfig {
+  bg: string;
+  icon: React.ReactNode;
+  text: string;
+  label: string;
+}
 
-export function StatusBadge({ status }: { status: GroupStatus }) {
-  const c = CONFIG[status];
+function makeConfig(status: BadgeVariant): BadgeConfig {
+  switch (status) {
+    case 'Active':
+      return {
+        bg: 'bg-ajo-lime-soft',
+        icon: <Radio size={11} color="#D47253" fill="#D47253" />,
+        text: 'text-ajo-lime',
+        label: 'Saving now',
+      };
+    case 'Open':
+      return {
+        bg: 'bg-ajo-amber-light',
+        icon: <UserPlus size={11} color="#F59E0B" />,
+        text: 'text-ajo-amber',
+        label: 'Open to join',
+      };
+    case 'Complete':
+      return {
+        bg: 'bg-ajo-surface',
+        icon: <CheckCircle size={11} color="#73716D" />,
+        text: 'text-ajo-muted',
+        label: 'Finished',
+      };
+    case 'yourTurn':
+      return {
+        bg: 'bg-ajo-amber',
+        icon: <Gift size={11} color="#fff" />,
+        text: 'text-white',
+        label: 'Your turn!',
+      };
+  }
+}
+
+export function StatusBadge({ status }: { status: BadgeVariant }) {
+  const c = makeConfig(status);
   return (
-    <View className={`flex-row items-center gap-1 rounded-full px-3 py-1.5 ${c.bg}`}>
-      <View className={`h-1.5 w-1.5 rounded-full ${c.dot}`} />
-      <Text className={`text-xs font-bold ${c.text}`}>{LABEL[status]}</Text>
+    <View className={`flex-row items-center gap-1.5 rounded-full px-3 py-1.5 ${c.bg}`}>
+      {c.icon}
+      <Text className={`text-[11px] font-bold ${c.text}`}>{c.label}</Text>
     </View>
   );
 }

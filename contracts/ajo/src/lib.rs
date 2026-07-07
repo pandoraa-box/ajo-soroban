@@ -5,26 +5,27 @@ mod errors;
 mod group;
 mod storage;
 mod types;
+mod vault;
 
 pub use errors::AjoError;
-pub use types::{GroupConfig, GroupState, GroupStatus, ParticipantRecord};
+pub use types::{GroupConfig, GroupState, GroupStatus, ParticipantRecord, VaultDeposit, VaultTier};
 
-use soroban_sdk::{contract, contractimpl, Address, Env};
+use soroban_sdk::{contract, contractimpl, Address, Env, String, Vec};
 
 #[contract]
 pub struct AjoContract;
 
 #[contractimpl]
 impl AjoContract {
-    // -----------------------------------------------------------------------
-    // Group lifecycle
-    // -----------------------------------------------------------------------
+    // ── Group lifecycle ──────────────────────────────────────────────────────
 
-    /// Create a new Ajo savings group.  Admin is auto-enrolled in slot 0.
-    /// Returns the group ID.
+    /// Create a new Ajo savings group.
+    ///
+    /// Admin is auto-enrolled in slot 0.  Returns the new `group_id`.
     pub fn create_group(
         env: Env,
         admin: Address,
+        name: String,
         token: Address,
         contribution_amount: i128,
         cycle_interval_ledgers: u32,
@@ -33,6 +34,7 @@ impl AjoContract {
         group::create_group(
             &env,
             admin,
+            name,
             token,
             contribution_amount,
             cycle_interval_ledgers,
@@ -45,25 +47,27 @@ impl AjoContract {
         group::join_group(&env, group_id, participant)
     }
 
-    // -----------------------------------------------------------------------
-    // Contribution & payout
-    // -----------------------------------------------------------------------
+    // ── Contribution & two-step payout ───────────────────────────────────────
 
-    /// Deposit one cycle contribution.  Caller must have approved this
-    /// contract to transfer `contribution_amount` tokens beforehand.
+    /// Deposit one cycle contribution.
+    ///
+    /// Caller must have approved this contract to transfer `contribution_amount`
+    /// tokens beforehand.  When the last participant contributes, the contract
+    /// automatically sets `payout_pending = true`.
     pub fn contribute(env: Env, group_id: u32, participant: Address) -> Result<(), AjoError> {
         cycle::contribute(&env, group_id, participant)
     }
 
-    /// Trigger payout to the current cycle's recipient once all participants
-    /// have contributed.  Returns the recipient address.
-    pub fn payout(env: Env, group_id: u32) -> Result<Address, AjoError> {
-        cycle::payout(&env, group_id)
+    /// Recipient explicitly claims their pending payout.
+    ///
+    /// Must be called by the address at the current rotation slot.  Transfers
+    /// the pooled funds, records missed cycles for non-contributors, and
+    /// advances the rotation.
+    pub fn claim_payout(env: Env, group_id: u32) -> Result<Address, AjoError> {
+        cycle::claim_payout(&env, group_id)
     }
 
-    // -----------------------------------------------------------------------
-    // Read-only queries
-    // -----------------------------------------------------------------------
+    // ── Read-only queries ────────────────────────────────────────────────────
 
     pub fn get_config(env: Env, group_id: u32) -> Result<GroupConfig, AjoError> {
         group::get_config(&env, group_id)
@@ -72,10 +76,46 @@ impl AjoContract {
     pub fn get_state(env: Env, group_id: u32) -> Result<GroupState, AjoError> {
         group::get_state(&env, group_id)
     }
+
+    /// Return every group ID that `participant` has joined (reverse index).
+    pub fn get_participant_groups(env: Env, participant: Address) -> Vec<u32> {
+        storage::get_participant_groups(&env, &participant)
+    }
+
+    // ── Vault ────────────────────────────────────────────────────────────────
+
+    /// Deposit `amount` of `token` into a tiered savings vault.
+    ///
+    /// Caller must have approved this contract for the transfer.
+    /// Returns the new `vault_id`.
+    pub fn deposit_vault(
+        env: Env,
+        owner: Address,
+        token: Address,
+        amount: i128,
+        tier: VaultTier,
+    ) -> Result<u32, AjoError> {
+        vault::deposit(&env, owner, token, amount, tier)
+    }
+
+    /// Claim principal plus accrued yield from a matured vault.
+    ///
+    /// Returns the total amount transferred.
+    pub fn claim_vault(env: Env, vault_id: u32, owner: Address) -> Result<i128, AjoError> {
+        vault::claim_vault(&env, vault_id, owner)
+    }
+
+    /// Return stored details for a vault.
+    pub fn get_vault(env: Env, vault_id: u32) -> Result<VaultDeposit, AjoError> {
+        vault::get_vault_info(&env, vault_id)
+    }
+
+    /// Preview accrued yield for a vault at the current ledger.
+    pub fn preview_yield(env: Env, vault_id: u32) -> Result<i128, AjoError> {
+        vault::preview_yield(&env, vault_id)
+    }
 }
 
-// -----------------------------------------------------------------------
-// Tests
-// -----------------------------------------------------------------------
+// ── Tests ────────────────────────────────────────────────────────────────────
 #[cfg(test)]
 mod tests;

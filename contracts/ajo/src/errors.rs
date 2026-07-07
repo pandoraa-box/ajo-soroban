@@ -3,9 +3,10 @@ use soroban_sdk::contracterror;
 #[contracterror]
 #[derive(Clone, Debug, PartialEq)]
 pub enum AjoError {
+    // ── Group errors (1-10) ──────────────────────────────────────────────────
     /// Caller is not authorised for this action.
     Unauthorized = 1,
-    /// Requested group does not exist.
+    /// Requested group / vault does not exist.
     GroupNotFound = 2,
     /// Group is not in the required state for this operation.
     InvalidGroupStatus = 3,
@@ -23,4 +24,18 @@ pub enum AjoError {
     CycleNotReady = 9,
     /// Arithmetic overflow.
     Overflow = 10,
+    // ── Payout errors (11-13) ────────────────────────────────────────────────
+    /// `claim_payout` called but no payout has been triggered yet.
+    NoPendingPayout = 11,
+    /// `contribute` called while a payout claim is still outstanding.
+    PayoutAlreadyPending = 12,
+    // ── Vault errors (13-16) ─────────────────────────────────────────────────
+    /// Requested vault does not exist.
+    VaultNotFound = 13,
+    /// Vault has already been claimed.
+    VaultAlreadyClaimed = 14,
+    /// Vault maturity ledger has not been reached yet.
+    VaultLocked = 15,
+    /// Deposit amount is below the tier's minimum.
+    InsufficientDeposit = 16,
 }

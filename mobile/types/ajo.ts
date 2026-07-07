@@ -1,6 +1,7 @@
 export type GroupStatus = 'Open' | 'Active' | 'Complete';
 
 export interface GroupConfig {
+  name: string;                    // human-readable circle name (stored on-chain)
   token: string;
   contribution_amount: bigint;
   cycle_interval_ledgers: number;
@@ -13,12 +14,13 @@ export interface GroupState {
   participants: string[];
   current_cycle: number;
   cycle_start_ledger: number;
+  next_payout_ledger: number;      // expected payout ledger for current cycle
   paid_this_cycle: string[];
+  payout_pending: boolean;         // true once all participants have contributed
 }
 
 export interface Circle {
   id: number;
-  name: string;
   config: GroupConfig;
   state: GroupState;
 }

@@ -1,5 +1,8 @@
 import type { Circle } from '@/types/ajo';
 
+// Mock data kept here for local development only.
+// Set USE_MOCK = true in contract.ts to enable.
+
 const DEMO_ADDRESSES = [
   'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGLEWUS2XFXTHM5MYOMTDI',
   'GBVNBFXKPDV7CQHVZXLC2FPYZYJSPGQJ7FJMCXSQFXJ7AZBJNBDNILW',
@@ -13,8 +16,8 @@ const USDC_TESTNET = 'CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA';
 export const MOCK_CIRCLES: Circle[] = [
   {
     id: 1,
-    name: 'Lagos Fam Circle',
     config: {
+      name: 'Lagos Fam Circle',
       token: USDC_TESTNET,
       contribution_amount: 1_000_000_000n,
       cycle_interval_ledgers: 120960,
@@ -26,13 +29,15 @@ export const MOCK_CIRCLES: Circle[] = [
       participants: DEMO_ADDRESSES,
       current_cycle: 2,
       cycle_start_ledger: 52000000,
+      next_payout_ledger: 52120960,
       paid_this_cycle: DEMO_ADDRESSES.slice(0, 3),
+      payout_pending: false,
     },
   },
   {
     id: 2,
-    name: 'Abuja Builders',
     config: {
+      name: 'Abuja Builders',
       token: USDC_TESTNET,
       contribution_amount: 500_000_000n,
       cycle_interval_ledgers: 60480,
@@ -44,13 +49,15 @@ export const MOCK_CIRCLES: Circle[] = [
       participants: DEMO_ADDRESSES.slice(1, 3),
       current_cycle: 0,
       cycle_start_ledger: 0,
+      next_payout_ledger: 0,
       paid_this_cycle: [],
+      payout_pending: false,
     },
   },
   {
     id: 3,
-    name: 'Nairobi Savings Ring',
     config: {
+      name: 'Nairobi Savings Ring',
       token: USDC_TESTNET,
       contribution_amount: 2_000_000_000n,
       cycle_interval_ledgers: 241920,
@@ -62,7 +69,9 @@ export const MOCK_CIRCLES: Circle[] = [
       participants: DEMO_ADDRESSES,
       current_cycle: 5,
       cycle_start_ledger: 50000000,
+      next_payout_ledger: 50241920,
       paid_this_cycle: [],
+      payout_pending: false,
     },
   },
 ];

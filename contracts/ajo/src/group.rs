@@ -1,13 +1,17 @@
 /// Group lifecycle: create, join, start.
-use soroban_sdk::{Address, Env, Vec};
+use soroban_sdk::{Address, Env, String, Vec};
 
 use crate::errors::AjoError;
-use crate::storage::{increment_group_id, load_config, load_state, save_config, save_participant, save_state};
+use crate::storage::{
+    add_participant_group, increment_group_id, load_config, load_state, save_config,
+    save_participant, save_state,
+};
 use crate::types::{GroupConfig, GroupState, GroupStatus, ParticipantRecord};
 
 /// Create a new savings group.
 ///
 /// # Arguments
+/// * `name`                   - Human-readable group name (e.g. "Lagos Savers")
 /// * `token`                  - SEP-41 token contract (e.g. USDC)
 /// * `contribution_amount`    - Stroops each participant pays per cycle
 /// * `cycle_interval_ledgers` - Minimum ledgers between cycle starts
@@ -17,6 +21,7 @@ use crate::types::{GroupConfig, GroupState, GroupStatus, ParticipantRecord};
 pub fn create_group(
     env: &Env,
     admin: Address,
+    name: String,
     token: Address,
     contribution_amount: i128,
     cycle_interval_ledgers: u32,
@@ -27,6 +32,7 @@ pub fn create_group(
     let group_id = increment_group_id(env);
 
     let config = GroupConfig {
+        name,
         token,
         contribution_amount,
         cycle_interval_ledgers,
@@ -39,13 +45,15 @@ pub fn create_group(
         participants: Vec::new(env),
         current_cycle: 0,
         cycle_start_ledger: 0,
+        next_payout_ledger: 0,
         paid_this_cycle: Vec::new(env),
+        payout_pending: false,
     };
 
     save_config(env, group_id, &config);
     save_state(env, group_id, &state);
 
-    // Admin auto-joins as first participant, setting rotation slot 0.
+    // Admin auto-joins as first participant (rotation slot 0).
     _join(env, group_id, admin, &config, state);
 
     group_id
@@ -74,16 +82,24 @@ pub fn join_group(env: &Env, group_id: u32, participant: Address) -> Result<(), 
     Ok(())
 }
 
-fn _join(env: &Env, group_id: u32, participant: Address, config: &GroupConfig, mut state: GroupState) {
+fn _join(
+    env: &Env,
+    group_id: u32,
+    participant: Address,
+    config: &GroupConfig,
+    mut state: GroupState,
+) {
     state.participants.push_back(participant.clone());
 
-    // Auto-activate when the last slot is filled.
+    // Auto-activate and set the first payout ledger when the last slot is filled.
     if state.participants.len() == config.max_participants {
         state.status = GroupStatus::Active;
         state.cycle_start_ledger = env.ledger().sequence();
+        state.next_payout_ledger = env.ledger().sequence() + config.cycle_interval_ledgers;
     }
 
     save_state(env, group_id, &state);
+
     save_participant(
         env,
         group_id,
@@ -93,14 +109,17 @@ fn _join(env: &Env, group_id: u32, participant: Address, config: &GroupConfig, m
             received_payout: false,
         },
     );
+
+    // Maintain reverse index so we can query "what groups is this address in".
+    add_participant_group(env, &participant, group_id);
 }
 
-/// Query group config (read-only helper for tests and frontends).
+/// Query group config (read-only).
 pub fn get_config(env: &Env, group_id: u32) -> Result<GroupConfig, AjoError> {
     load_config(env, group_id)
 }
 
-/// Query group state (read-only helper for tests and frontends).
+/// Query group state (read-only).
 pub fn get_state(env: &Env, group_id: u32) -> Result<GroupState, AjoError> {
     load_state(env, group_id)
 }

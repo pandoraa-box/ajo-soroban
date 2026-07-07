@@ -107,7 +107,7 @@ export default function DashboardScreen() {
             <View className="flex-1">
               <Text className="font-semibold text-ajo-amber text-sm">You're next for payout!</Text>
               <Text className="text-xs text-ajo-amber/80 mt-0.5">
-                {upcomingPayout.name} — {formatAmount(
+                {upcomingPayout.config.name} — {formatAmount(
                   upcomingPayout.config.contribution_amount * BigInt(upcomingPayout.config.max_participants),
                 )} pending
               </Text>

@@ -1,6 +1,7 @@
 import { Hero } from '@/components/landing/Hero';
 import { TrustBand } from '@/components/landing/TrustBand';
 import { Features } from '@/components/landing/Features';
+import { CirclesShowcase } from '@/components/landing/CirclesShowcase';
 import { HowItWorks } from '@/components/landing/HowItWorks';
 import { WhyOnChain } from '@/components/landing/WhyOnChain';
 import { Testimonials } from '@/components/landing/Testimonials';
@@ -13,12 +14,13 @@ export default function LandingPage() {
       <Hero />
       <TrustBand />
       <Features />
+      <CirclesShowcase />
       <HowItWorks />
       <WhyOnChain />
       <Testimonials />
       <FAQ />
 
-      {/* CTA — white with a bold dark card */}
+      {/* CTA */}
       <section className="bg-white py-28 lg:py-36">
         <div className="page-width">
           <div className="rounded-[2.5rem] bg-ajo-dark px-8 py-16 lg:px-16 lg:py-20 animate-slide-up">
@@ -28,7 +30,8 @@ export default function LandingPage() {
                   Ready when you are.
                 </h2>
                 <p className="mt-4 max-w-md text-lg text-white/50 leading-relaxed">
-                  No sign-up. No KYC. Just connect your Stellar wallet and start saving with your people.
+                  No sign-up. No KYC. Just connect your Stellar wallet and start saving with
+                  your people.
                 </p>
               </div>
               <div className="flex flex-wrap gap-3 shrink-0">

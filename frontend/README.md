@@ -2,20 +2,36 @@
 
 The Ajo web frontend — a **Next.js 15** app (App Router) styled with **Tailwind CSS**,
 connecting to the [Ajo Soroban contract](../contracts) via the Stellar SDK and the
-Freighter wallet.
+Freighter wallet extension.
 
 ---
 
 ## Features
 
-- **Landing page** — hero, how-it-works, and a live app preview.
-- **Dashboard** (`/dashboard`) — sidebar layout with an overview, KPI cards, a savings
-  chart, activity feed, and quick actions. All data is derived from real circle state.
-- **Circles** — browse, filter (open / active / finished), and view circle details.
-- **Create a circle** — configure amount, frequency, and group size.
-- **Circle detail** — join, contribute, and trigger payouts; live contribution progress
-  and rotation order.
-- **Wallet** — connect via the Freighter browser extension.
+**Landing page**
+- Hero with animated SVG illustration, inline stats ($0 fees, USDC, Open source)
+- Trust band, Features (3-column cards), Circles Showcase (dark section with live mock circle cards)
+- How It Works, Why On-Chain, Testimonials, FAQ, final CTA card
+
+**Dashboard** (`/dashboard`)
+- Dark sidebar — logo, wallet chip, navigation, network indicator, disconnect
+- Sticky top bar — greeting, notification bell (payout alert dot), Connect / New Circle
+- KPI cards (4-up grid): circles joined, saved this round, upcoming payout, open to join
+- Savings chart + My Circles panel (5-column layout)
+- Activity feed + Quick actions + test wallet balance card
+
+**Circles** (`/dashboard/circles`)
+- Filter by status (Open / Active / Finished)
+- CircleCard — name, pool amount, contribution, members, frequency, progress bar
+
+**Create a circle** (`/dashboard/circles/create`)
+- Configure name, token, contribution amount, cycle frequency, group size
+
+**Circle detail** (`/dashboard/circles/[id]`)
+- Join, contribute, claim payout; live progress bar; rotation order; member list
+
+**Wallet**
+- Connect via Freighter browser extension; shortened address pill in sidebar and top bar
 
 ---
 
@@ -24,7 +40,7 @@ Freighter wallet.
 | Concern | Choice |
 |---------|--------|
 | Framework | Next.js 15 (App Router, Turbopack dev) |
-| Styling | Tailwind CSS + Satoshi font |
+| Styling | Tailwind CSS v3 + Satoshi / Newsreader fonts |
 | Blockchain | `@stellar/stellar-sdk`, `@stellar/freighter-api` |
 | Icons | `lucide-react` |
 
@@ -34,8 +50,8 @@ Freighter wallet.
 
 ```bash
 npm install
-cp .env.local.example .env.local   # optional — mock mode works without it
-npm run dev                        # http://localhost:3000
+cp .env.local.example .env.local   # optional — mock mode works without env vars
+npm run dev                        # → http://localhost:3000
 ```
 
 The app defaults to **mock mode** (`NEXT_PUBLIC_USE_MOCK=true`), rendering the full UI
@@ -58,21 +74,26 @@ with sample circles so you can develop without a deployed contract.
 ```
 frontend/
 ├── app/
-│   ├── page.tsx              # landing page
-│   ├── dashboard/            # sidebar-wrapped app (layout.tsx)
-│   │   ├── page.tsx          # overview
-│   │   └── circles/          # list, create, [id] detail
-│   └── layout.tsx            # root layout + providers
+│   ├── page.tsx                  # landing page
+│   ├── layout.tsx                # root layout (WalletProvider + ClientShell)
+│   └── dashboard/
+│       ├── layout.tsx            # sidebar wrapper (DashboardSidebar)
+│       ├── page.tsx              # overview (KPI cards, chart, activity feed)
+│       └── circles/
+│           ├── page.tsx          # circle list
+│           ├── create/page.tsx   # create form
+│           └── [id]/page.tsx     # circle detail
 ├── components/
-│   ├── ui/                   # Button, Badge, Card
-│   ├── layout/               # Navbar, Footer, Sidebar, ClientShell
-│   ├── landing/              # Hero, Features, HowItWorks, TrustBand
-│   ├── circles/              # CircleCard, CreateCircleForm, MemberList, …
-│   └── dashboard/            # KPI cards, SavingsChart, ActivityFeed, CircleList
-├── context/                  # WalletContext (Freighter)
-├── hooks/                    # useCircle, useAllCircles
-├── lib/                      # contract, stellar, freighter, mockData, utils
-└── types/                    # shared Ajo types + formatters
+│   ├── ui/                       # Button, Badge, Card primitives
+│   ├── layout/                   # Navbar, Footer, DashboardSidebar, ClientShell
+│   ├── landing/                  # Hero, TrustBand, Features, CirclesShowcase,
+│   │                             #   HowItWorks, WhyOnChain, Testimonials, FAQ
+│   ├── circles/                  # CircleCard, CreateCircleForm, MemberList, …
+│   └── dashboard/                # SavingsChart, ActivityFeed, CircleList, MetricCard
+├── context/                      # WalletContext (Freighter)
+├── hooks/                        # useCircle, useAllCircles
+├── lib/                          # contract integration, Stellar SDK, mockData, utils
+└── types/                        # shared Ajo types + formatters
 ```
 
 ---
@@ -91,6 +112,18 @@ npm run type-check   # tsc --noEmit
 
 ## Design system
 
-- **Primary** royal blue `#1B3C8A` · **Accent** warm orange `#F97316`
-- Mostly-white backgrounds, generous whitespace, `max-w-8xl` + `px-28` on large screens
-- Satoshi typeface throughout
+Both the web app and mobile app share the same token palette:
+
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `ajo-dark` | `#1E1D1B` | Charcoal — headings, sidebar background |
+| `ajo-lime` | `#D47253` | Coral — primary buttons, accents, active states |
+| `ajo-surface` | `#FAF8F3` | Warm cream — page background |
+| `ajo-muted` | `#73716D` | Secondary text, labels |
+| `ajo-green` | `#16A34A` | Active badges, network indicator |
+| `ajo-amber` | `#F59E0B` | Payout alerts, warnings |
+| `ajo-border` | `#EBE8E1` | Card borders, dividers |
+
+- **Max width:** `max-w-8xl` (88 rem) with generous horizontal padding
+- **Radius:** `rounded-3xl` (cards), `rounded-full` (pills/buttons), `rounded-4xl` (2 rem, CTAs)
+- **Fonts:** Satoshi (sans) + Newsreader (serif, page/section headings)
